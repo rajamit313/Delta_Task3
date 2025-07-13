@@ -7,10 +7,29 @@ import { NextResponse } from "next/server";
 
 const JWT_SECRET = process.env.JWT_SECRET || "SuperSecret";
 
-export async function POST(request) {
-    const body = await request.json();
+// export async function GET(request) {
+//     await dbConnect();
+//     const token = request.cookies.get('token')?.value;
+//     if (!token) {
+//         return NextResponse.json({ success: false, message: "Not authenticated" }, { status: 401 });
+//     }
+
+//     let decode;
+//     try {
+//         decode = jwt.verify(token, JWT_SECRET);
+//     } catch (err) {
+//         return NextResponse.json({ success: false, message: "Invalid or token expired" }, { status: 401 });
+//     }
+
+//     const doc = await User.findOne({ username: decode.username });
+
+//     return NextResponse.json({ sucess: true, profilepic: doc.profilepic});
+// }
+
+export async function GET(request) {
+    // const body = await request.json();
     await dbConnect();
-    const token = cookies().get("token")?.value;
+    const token = request.cookies.get('token')?.value;
     if (!token) {
         return NextResponse.json({ success: false, message: "Not authenticated" }, { status: 401 });
     }
@@ -24,14 +43,20 @@ export async function POST(request) {
 
     const doc = await User.findOne({ username: decode.username });
 
-    return NextResponse.json({ success: true, username: doc.username, mobile: doc.mobile, emailID: doc.emailID });
+    return NextResponse.json({
+        success: true,
+        username: doc.username,
+        mobile: doc.mobile,
+        emailID: doc.emailID,
+        profilepic: doc.profilepic,
+    });
 }
 
 export async function PUT(request) {
     const body = await request.json();
     await dbConnect();
 
-    const token = cookies().get("token")?.value;
+    const token = request.cookies.get('token')?.value;
     if (!token) {
         return NextResponse.json({ success: false, message: "Not authenticated" }, { status: 401 });
     }
@@ -45,7 +70,7 @@ export async function PUT(request) {
 
     const updatedUser = await User.findOneAndUpdate(
         { username: decode.username },
-        { emailID: body.emailID, mobile: body.mobile },
+        { emailID: body.emailID, mobile: body.mobile, profilepic: body.profilePic },
         { new: true }
     );
 

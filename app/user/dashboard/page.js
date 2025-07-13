@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -13,9 +14,12 @@ const Dashboard = () => {
   const router = useRouter();
 
   const tabStyle = (tab) =>
-    `text-center ${activeTab === tab ? 'border-b-4 border-cyan-500 font-semibold text-cyan-700' : ''}`;
+    `flex flex-col items-center justify-center w-24 pb-1 border-b-4 transition-all duration-200 cursor-pointer
+     ${activeTab === tab
+        ? 'border-cyan-400 text-cyan-300 font-semibold'
+        : 'border-transparent text-white hover:text-cyan-300'}`;
 
-  const inputClass = "w-full px-4 py-2 mb-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500";
+  const inputClass = "w-full px-4 py-2 mb-4 border border-gray-300 rounded-md bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-cyan-500";
   const buttonClass = "mt-4 px-4 py-2 bg-cyan-600 text-white rounded-md hover:bg-cyan-700";
 
   const trainHandler = async () => {
@@ -47,36 +51,29 @@ const Dashboard = () => {
     }
   };
 
-  const ticketHandler = (train)=>{
+  const ticketHandler = (train) => {
     router.push(`/user/trainticket/${encodeURIComponent(train.name)}/${train.number}/${encodeURIComponent(from)}/${encodeURIComponent(to)}/${encodeURIComponent(date)}`);
-
-  }
+  };
 
   return (
-    <div className="md:mx-54">
-      {/* Navigation Tabs */}
-      <div className="h-16 w-full flex justify-start items-center gap-18 fixed top-18 bg-white z-10 px-6">
-
-        <div className="cursor-pointer" onClick={() => setActiveTab("Train")}>
-          <img src="/train.png" alt="train" className="w-10 mx-auto" />
-          <div className={tabStyle("Train")}>Train</div>
-        </div>
-        <div className="cursor-pointer" onClick={() => setActiveTab("Movie")}>
-          <img src="/movie.png" alt="movie" className="w-10 mx-auto" />
-          <div className={tabStyle("Movie")}>Movie</div>
-        </div>
-        <div className="cursor-pointer" onClick={() => setActiveTab("Concert")}>
-          <img src="/concert.png" alt="concert" className="w-10 mx-auto" />
-          <div className={tabStyle("Concert")}>Concert</div>
-        </div>
+    <div className="min-h-screen w-full text-white px-4 pt-24 md:ml-56">
+      {/* Tabs */}
+      <div className="flex justify-start items-center gap-10 px-4 fixed top-16 left-0 right-0 bg-[rgba(0,0,0,0.7)] backdrop-blur-md z-10 py-3 pl-[15rem] border-b border-gray-700">
+        {["Train", "Movie", "Concert"].map((tab) => (
+          <div key={tab} className={tabStyle(tab)} onClick={() => setActiveTab(tab)}>
+            <img src={`/${tab.toLowerCase()}.png`} alt={tab} className="w-8 mb-1" />
+            <span>{tab}</span>
+          </div>
+        ))}
       </div>
 
-      {/* Booking Forms */}
-      <div className="mt-25 p-6 md:pl-20 w-auto md:w-[60vw]">
-        {/* Train Form */}
+      {/* Form Area */}
+      <div className="mt-28 p-4 md:pl-6 md:w-[60vw] border-green-600 border rounded-md">
+        
+        {/* Train Booking Form */}
         {activeTab === "Train" && (
-          <div className="bg-blue-100 p-4 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Train Ticket Booking</h2>
+          <div className=" text-teal-600 bg-[rgba(60,139,150,0.11)] p-6 rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold mb-6">Train Ticket Booking</h2>
             <input type="text" placeholder="From" className={inputClass} value={from} onChange={(e) => { setFrom(e.target.value); setOpen(false); }} />
             <input type="text" placeholder="To" className={inputClass} value={to} onChange={(e) => { setTo(e.target.value); setOpen(false); }} />
             <input type="date" className={inputClass} value={date} onChange={(e) => { setDate(e.target.value); setOpen(false); }} />
@@ -86,42 +83,48 @@ const Dashboard = () => {
 
         {/* Train Results */}
         {Open && List.length > 0 && activeTab === "Train" && (
-          <div className="h-auto mt-4">
-            {List.map((train, index) => (
+          <div className="mt-6 space-y-4">
+            {List.map((train, index) => {
+              const fromStation = train.stations.find(obj => obj.name === from);
+              const toStation = train.stations.find(obj => obj.name === to);
 
-              <div key={index} className="border border-amber-500 p-4 mb-2 rounded shadow bg-yellow-50 flex justify-between">
-                <div>
-                  <h2 className="text-lg font-bold">{train.name} ({train.number})</h2>
-                  <div className='flex justify-start gap-20'>
-                    <p>From: {from}</p>
-                    <p className='w-10'>➟</p>
-                    <p>To: {to}</p>
+              return (
+                <div key={index} className="bg-yellow-100 text-black rounded-xl p-4 flex justify-between shadow border border-yellow-400">
+                  <div>
+                    <h3 className="text-xl font-bold mb-1">{train.name} ({train.number})</h3>
+                    <div className="flex items-center gap-4 text-sm">
+                      <span>From: {from}</span>
+                      <span className="text-lg">➟</span>
+                      <span>To: {to}</span>
+                    </div>
+                    <p className="text-sm mt-1">Departure: {fromStation?.departure} | Arrival: {toStation?.arrival}</p>
+                    <div className="flex gap-3 mt-3">
+                      {Object.entries(train.seats).map(([type, count]) => (
+                        <div key={type} className="bg-yellow-200 w-24 h-16 rounded-md flex flex-col justify-center items-center shadow text-sm">
+                          <span className="font-semibold">{type}</span>
+                          <span>Seats: {count}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <p>Departure: {train.stations[train.stations.findIndex(obj => obj.name === from)].departure} | Arrival: {train.stations[train.stations.findIndex(obj => obj.name === to)].arrival}</p>
-                  <div className='flex gap-5 mt-2'>
-                    {Object.entries(train.seats).map(i => (
-                      <div className='w-20 h-16 border bg-yellow-100 rounded flex justify-start items-center flex-col' key={i[0]}>
-                        <div className='font-semibold'>{i[0]}</div>
-                        <div>Seats: {i[1]}</div>
-                      </div>
-                    ))}
+                  <div className="flex items-center">
+                    <button
+                      className="text-4xl bg-gradient-to-r from-cyan-500 to-teal-400 bg-clip-text text-transparent hover:scale-110 transition"
+                      onClick={() => ticketHandler(train)}
+                    >
+                      ➤
+                    </button>
                   </div>
                 </div>
-                <div className='w-10 flex justify-center items-center text-3xl'>
-                  <button className="text-5xl bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 bg-clip-text text-transparent cursor-pointer" onClick={()=>ticketHandler(train)}>
-                    ➤
-                  </button>
-                </div>
-              </div>
-
-            ))}
+              );
+            })}
           </div>
         )}
 
         {/* Movie Form */}
         {activeTab === "Movie" && (
-          <div className="bg-red-100 p-4 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Movie Ticket Booking</h2>
+          <div className="bg-red-100 text-black p-6 rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold mb-6">Movie Ticket Booking</h2>
             <input type="text" placeholder="City" className={inputClass} />
             <input type="text" placeholder="Movie Name" className={inputClass} />
             <input type="date" className={inputClass} />
@@ -131,8 +134,8 @@ const Dashboard = () => {
 
         {/* Concert Form */}
         {activeTab === "Concert" && (
-          <div className="bg-yellow-100 p-4 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Concert Booking</h2>
+          <div className="bg-yellow-100 text-black p-6 rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold mb-6">Concert Booking</h2>
             <input type="text" placeholder="City" className={inputClass} />
             <input type="text" placeholder="Artist" className={inputClass} />
             <input type="date" className={inputClass} />
@@ -144,4 +147,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

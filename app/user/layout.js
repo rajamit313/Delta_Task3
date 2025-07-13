@@ -22,7 +22,7 @@ export default function UserLayout({ children }) {
       
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}>
         <Navbar2/>
-        <div className="min-h-screen bg-white bg-[radial-gradient(100%_50%_at_50%_0%,rgba(0,163,255,0.13)_0,rgba(0,163,255,0)_50%,rgba(0,163,255,0.10)_100%)]">
+        <div className="min-h-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,255,198,0.3),rgba(0,255,0,0))]">
           {children}
         </div>
        

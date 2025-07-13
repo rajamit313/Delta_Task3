@@ -1,67 +1,58 @@
-"use client"
-import React, { useState } from 'react'
+"use client";
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 
-
 export const Login = () => {
-    const route = useRouter();
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [role, setRole] = useState('');
+  const route = useRouter();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
 
-
-    const submitHandler = async () => {
-        let res = await fetch("/api/add/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username, password, role }),
-        });
-        let data = await res.json();
-
-        if (data.success) {
-            // Small delay to allow cookie to persist
-                route.push("/user/dashboard");
-        }
-        else {
-            alert("Enter valid credentials");
-            setPassword('');
-            setUsername('');
-            setRole('');
-        }
+  const submitHandler = async () => {
+    let res = await fetch("/api/add/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password, role }),
+    });
+    let data = await res.json();
+    if (data.success) route.push("/user/dashboard");
+    else {
+      alert("Enter valid credentials");
+      setPassword(''); setUsername(''); setRole('');
     }
+  };
 
-    return (
-        <><Navbar />
-            <div className='flex justify-center py-18 min-h-screen'>
+  return (
+    <>
+      <Navbar />
+      <div className="flex justify-center items-center min-h-screen px-4">
+        <div className="w-full max-w-md bg-white/10 text-white  rounded-xl p-6 shadow-lg border border-white/10">
+          <h1 className="text-3xl font-bold text-center mb-6 text-green-300">Login</h1>
 
-                <div className='h-100 w-80 bg-cyan-200 flex justify-top flex-col items-center rounded-xl'>
-                    <div><h1 className='text-3xl h-20 flex justify-center items-center'>Login</h1></div>
+          <div className="space-y-4 mb-4">
+            <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full px-4 py-2 bg-white/10 border border-white/20 text-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400" />
+            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2 bg-white/10 border border-white/20 text-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400" />
+          </div>
 
-                    <div className='flex flex-wrap gap-4 mb-2'>
-                        <input type="text" placeholder='Username' value={username} onChange={(e) => { setUsername(e.target.value) }} className='mx-auto bg-amber-50 w-54 text-center rounded-sm' />
-                        <input type="password" placeholder='Password' value={password} onChange={(e) => { setPassword(e.target.value) }} className='mx-auto bg-amber-50 w-54 text-center rounded-sm' />
-                    </div>
+          <div className="text-right mb-2">
+            <Link href="/forgotPassword" className="text-blue-400 hover:underline text-sm">Forgot password?</Link>
+          </div>
 
-                    <Link href={"/forgotPassword"} className='text-blue-500'>Forgot password?</Link>
-                    <div className='py-3'>
-                        <label><input type="radio" name="role" value="user" onChange={(e) => setRole(e.target.value)} /> User</label><br />
-                        <label><input type="radio" name="role" value="vendor" onChange={(e) => setRole(e.target.value)} /> Vendor</label><br />
-                        <label><input type="radio" name="role" value="admin" onChange={(e) => setRole(e.target.value)} /> Admin</label>
-                    </div>
+          <div className="mb-4 text-sm space-y-1 pl-40">
+            <label className="block"><input type="radio" name="role" value="user" onChange={(e) => setRole(e.target.value)} className="mr-2" />User</label>
+            <label className="block"><input type="radio" name="role" value="vendor" onChange={(e) => setRole(e.target.value)} className="mr-2" />Vendor</label>
+            <label className="block"><input type="radio" name="role" value="admin" onChange={(e) => setRole(e.target.value)} className="mr-2" />Admin</label>
+          </div>
 
-                    <button type='button' onClick={submitHandler} className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-4 py-1.5 text-center me-2 mb-2 cursor-pointer">Login</button>
+          <button type="button" onClick={submitHandler} className="w-full bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:from-red-500 hover:to-red-700 font-medium rounded-md text-sm px-5 py-2 mb-3 transition">Login</button>
 
-                    <div className='mx-auto my-2'>
-                        <p>Don't have account? <Link href={"/sign_up"} className='text-blue-500'>Sign Up</Link></p>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
-}
+          <p className="text-center text-sm">Don't have an account? <Link href="/sign_up" className="text-blue-400 hover:underline">Sign Up</Link></p>
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default Login;

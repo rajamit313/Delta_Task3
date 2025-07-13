@@ -29,6 +29,9 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     length: [10, "Mobile no. must be 10 digits long"],
   },
+  profilepic: {
+    type: String, default: '/defaultprofilepic.png' 
+  },
 }, { timestamps: true });
 
 const User = mongoose.models.User || mongoose.model('User', UserSchema);

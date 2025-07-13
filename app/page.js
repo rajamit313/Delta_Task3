@@ -6,35 +6,71 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <div className="relative top-10">
-        <div className="text-black flex justify-center flex-col h-40 items-center gap-3">
-          <h1 className="text-5xl">UniTick</h1>
-          <p className="text-xl">One stop solution for ticket booking</p>
+      <div className="relative top-10 px-4">
+        <div className="text-white flex justify-center flex-col h-40 items-center gap-3">
+          <h1 className="text-5xl text-green-300 font-semibold">UniTick</h1>
+          <p className="text-xl text-gray-300">One stop solution for ticket booking</p>
         </div>
-        <div className="flex justify-center gap-3">
-          <Link href={"/login"}>
-            <button type="button" className="text-white bg-gradient-to-r from-cyan-400 to-blue-400 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 cursor-pointer">Start Now</button>
-          </Link>
-          <Link href={"/readmore"}>
-            <button type="button" className="text-white bg-gradient-to-r from-cyan-400 to-blue-400 hover:bg-gradient-to-bl font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 cursor-pointer">Read More</button>
-          </Link>
-        </div>
-        <div className="gap-6 flex justify-center py-16 ">
-          <div className="w-70 h-70 bg-yellow-200 rounded-2xl overflow-hidden">
-            <img src="train.jpg" alt="train" className="h-46 w-full " />
 
-          </div>
-          <div className="w-70 h-70 bg-yellow-200 rounded-2xl overflow-hidden">
-            <img src="movie.jpg" alt="movie" className="h-46 w-full" />
-          </div>
-          <div className="w-70 h-70 bg-yellow-200 rounded-2xl overflow-hidden">
-            <img src="flight.jpg" alt="flight" className="h-46 w-full" />
-            Book flight tickets at lowest price
-          </div>
-          <div className="w-70 h-70 bg-yellow-200 rounded-2xl overflow-hidden">
-            <img src="concert.jpg" alt="concert" className="h-46 w-full" />
-          </div>
+        <div className="flex justify-center gap-3 flex-wrap">
+          <Link href="/login">
+            <button
+              type="button"
+              className="text-white bg-gradient-to-r from-green-400 to-emerald-500 hover:from-emerald-500 hover:to-green-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 cursor-pointer"
+            >
+              Start Now
+            </button>
+          </Link>
+          <Link href="/readmore">
+            <button
+              type="button"
+              className="text-white bg-gradient-to-r from-green-400 to-emerald-500 hover:from-emerald-500 hover:to-green-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 cursor-pointer"
+            >
+              Read More
+            </button>
+          </Link>
         </div>
+
+        <div className="gap-6 flex justify-center flex-wrap py-16">
+          {[
+            {
+              src: "train.jpg",
+              alt: "Train",
+              title: "Train Tickets",
+              desc: "Book train tickets easily and instantly",
+            },
+            {
+              src: "movie.jpg",
+              alt: "Movie",
+              title: "Movie Tickets",
+              desc: "Reserve your seats at top cinemas",
+            },
+            {
+              src: "flight.jpg",
+              alt: "Flight",
+              title: "Flight Tickets",
+              desc: "Book flights at the best prices",
+            },
+            {
+              src: "concert.jpg",
+              alt: "Concert",
+              title: "Concert Passes",
+              desc: "Get your passes for live events",
+            },
+          ].map((item, index) => (
+            <div
+              key={index}
+              className="w-64 bg-white/10 text-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-transform hover:scale-105">
+                
+              <img src={item.src} alt={item.alt} className="w-full h-40 object-cover" />
+              <div className="p-3">
+                <h3 className="text-lg font-semibold text-green-300">{item.title}</h3>
+                <p className="text-sm text-gray-300">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
       </div>
     </>
   );

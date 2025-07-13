@@ -25,9 +25,11 @@ export default function RootLayout({ children }) {
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Funnel+Sans:ital,wght@0,300..800;1,300..800&family=Orbitron:wght@400..900&display=swap');
           </style>
-          <div className="min-h-screen bg-white bg-[radial-gradient(100%_50%_at_50%_0%,rgba(0,163,255,0.13)_0,rgba(0,163,255,0)_50%,rgba(0,163,255,0.10)_100%)]">
+         <div className="min-h-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,255,198,0.3),rgba(0,255,0,0))]">
+
             {children}         
           </div>
+          
           <Footer />
           <script src="https://cdn.lordicon.com/lordicon.js"></script>
         
