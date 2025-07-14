@@ -3,9 +3,19 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
+import { useRouter } from "next/navigation";
 
 const Navbar2 = () => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  const logoutHandler = async()=>{
+    const res = await fetch('/api/add/logout',{
+      method: 'POST'
+    });
+    const data = await res.json();
+    if(data.success) router.push('/');
+  }
 
   return (
     <>
@@ -18,16 +28,22 @@ const Navbar2 = () => {
           ☰
         </button>
 
-      
-        <div className="text-2xl font-bold text-green-300 tracking-wide hidden md:block">
-          UniTick
+
+        <div className='flex justify-center items-center gap-2'>
+          <img src="/logo.png" alt="logo" className='h-10 w-10' />
+          <div className="text-2xl font-bold text-green-300 tracking-wide">
+            UniTick
+          </div>
         </div>
 
         <ul className="gap-6 items-center hidden md:flex">
           <Link href="/">
             <button className="hover:text-green-300 transition duration-200">Home</button>
           </Link>
+          <Link href={'/readmore'}>
           <button className="hover:text-green-300 transition duration-200">About</button>
+          </Link>
+          <button className="hover:text-green-300 transition duration-200" onClick={logoutHandler}>Logout</button>
         </ul>
       </nav>
 

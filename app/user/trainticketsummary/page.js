@@ -13,6 +13,23 @@ const TicketSummary = () => {
   const to = decodeURIComponent(params.get('to') || '');
   const date = decodeURIComponent(params.get('date') || '');
 
+  const submitHandler = async()=>{
+  const res = await fetch("/api/add/trainticket", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ Name, Age, Gender, trainName, trainNumber, from, to, date }),
+    });
+
+    const data = await res.json();
+
+    if (!data) {
+      alert('Server issue. Please try again!');
+      return;
+    }
+  }
+
   return (
     <main className="min-h-screen  text-white px-6 py-16 flex justify-center items-start">
       <div className="w-full max-w-2xl bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 shadow-xl">
@@ -52,7 +69,7 @@ const TicketSummary = () => {
         </div>
 
         <div className="flex justify-center mt-10">
-          <button className="px-6 py-2 rounded-lg bg-gradient-to-r from-teal-400 to-cyan-500 text-white font-semibold hover:scale-105 transition">
+          <button className="px-6 py-2 rounded-lg bg-gradient-to-r from-teal-400 to-cyan-500 text-white font-semibold hover:scale-105 transition" onClick={submitHandler}>
             Proceed to Pay
           </button>
         </div>

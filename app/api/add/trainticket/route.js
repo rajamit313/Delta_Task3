@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import User from "@/model/user";
 import { dbConnect } from "@/lib/mongoose";
 
 export async function POST(request) {
     const body = await request.json();
     await dbConnect();
 
-    const newUser = new User({
+    const newUser = new TrainTicket({
           trainName: body.trainName,
           trainNumber: body.trainNumber,
           from: body.from,
@@ -22,7 +21,5 @@ export async function POST(request) {
         }catch{
              return NextResponse.json({success: false});
         }
-        
-
 
 }

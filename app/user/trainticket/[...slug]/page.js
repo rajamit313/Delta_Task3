@@ -22,21 +22,6 @@ const TrainTicket = ({ params }) => {
       return;
     }
 
-    const res = await fetch("/api/add/trainticket", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ Name, Age, Gender, trainName, trainNumber, from, to, date }),
-    });
-
-    const data = await res.json();
-
-    if (!data) {
-      alert('Server issue. Please try again!');
-      return;
-    }
-
     const query = `?Name=${encodeURIComponent(Name)}&Age=${encodeURIComponent(Age)}&Gender=${encodeURIComponent(Gender)}&trainName=${encodeURIComponent(trainName)}&trainNumber=${encodeURIComponent(trainNumber)}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${encodeURIComponent(date)}`;
     router.push(`/user/trainticketsummary${query}`);
   };

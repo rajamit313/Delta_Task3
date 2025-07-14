@@ -32,6 +32,7 @@ const UserSchema = new mongoose.Schema({
   profilepic: {
     type: String, default: '/defaultprofilepic.png' 
   },
+  coins: { type: Number, default: 1000 },
 }, { timestamps: true });
 
 const User = mongoose.models.User || mongoose.model('User', UserSchema);

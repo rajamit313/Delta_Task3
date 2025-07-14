@@ -7,6 +7,7 @@ const Profile = () => {
   const [username, setUsername] = useState('');
   const [emailID, setEmailID] = useState('');
   const [mobile, setMobile] = useState('');
+  const [coins, setCoins] = useState(0);
   const [editemailID, setEditEmailID] = useState(false);
   const [editmobile, setEditMobile] = useState(false);
   const [profilePic, setProfilePic] = useState('/defaultprofilepic.png');
@@ -14,15 +15,14 @@ const Profile = () => {
   const findData = async () => {
     const res = await fetch("/api/add/profile", {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      }
+      headers: { "Content-Type": "application/json" },
     });
     const data = await res.json();
     setUsername(data.username);
     setEmailID(data.emailID);
     setMobile(data.mobile);
     setProfilePic(data.profilepic);
+    setCoins(data.coins);
   };
 
   useEffect(() => {
@@ -32,21 +32,27 @@ const Profile = () => {
   const saveHandler = async () => {
     const res = await fetch("/api/add/profile", {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ emailID, mobile, profilePic }),
     });
     const data = await res.json();
     findData();
+     window.location.reload();
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-6">
       <div className="bg-[rgba(255,255,255,0.1)] shadow-lg rounded-xl p-8 w-full max-w-2xl">
         <div className="flex flex-col items-center gap-3 mb-6">
-          <img src={profilePic} alt="Profile" className="w-36 h-36 rounded-full object-cover border-2 border-green-400 shadow" />
+          <img
+            src={profilePic}
+            alt="Profile"
+            className="w-36 h-36 rounded-full object-cover border-2 border-green-400 shadow"
+          />
           <CloudinaryUploader onUpload={(url) => setProfilePic(url)} />
+          <p className="text-green-300 font-semibold text-lg">
+            💰 Coins: <span className="font-bold">{coins}</span>
+          </p>
         </div>
 
         <div className="space-y-5">
@@ -56,7 +62,8 @@ const Profile = () => {
               type="text"
               value={username}
               readOnly
-              className="w-full md:w-142 px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"/>
+              className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md"
+            />
           </div>
 
           <div>
@@ -67,7 +74,8 @@ const Profile = () => {
                 value={emailID}
                 readOnly={!editemailID}
                 onChange={(e) => setEmailID(e.target.value)}
-                className={`flex-1 px-4 py-2 border rounded-md ${editemailID ? 'bg-white border-green-400' : 'bg-gray-100 border-gray-300'}`}/>
+                className={`flex-1 px-4 py-2 border rounded-md ${editemailID ? 'bg-white border-green-400' : 'bg-gray-100 border-gray-300'}`}
+              />
               <button onClick={() => setEditEmailID(!editemailID)} className="cursor-pointer">
                 <lord-icon
                   src="https://cdn.lordicon.com/iubtdgvu.json"

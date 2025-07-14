@@ -16,8 +16,7 @@ export default function Home() {
           <Link href="/login">
             <button
               type="button"
-              className="text-white bg-gradient-to-r from-green-400 to-emerald-500 hover:from-emerald-500 hover:to-green-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 cursor-pointer"
-            >
+              className="text-white bg-gradient-to-r from-green-400 to-emerald-500 hover:from-emerald-500 hover:to-green-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2 cursor-pointer">
               Start Now
             </button>
           </Link>

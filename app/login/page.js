@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
+import Toast from '@/components/Toast';
+import { toast, Bounce } from 'react-toastify';
 
 export const Login = () => {
   const route = useRouter();
@@ -19,13 +21,25 @@ export const Login = () => {
     let data = await res.json();
     if (data.success) route.push("/user/dashboard");
     else {
-      alert("Enter valid credentials");
+      toast(data.message, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       setPassword(''); setUsername(''); setRole('');
     }
   };
 
   return (
     <>
+      <Toast />
       <Navbar />
       <div className="flex justify-center items-center min-h-screen px-4">
         <div className="w-full max-w-md bg-white/10 text-white  rounded-xl p-6 shadow-lg border border-white/10">

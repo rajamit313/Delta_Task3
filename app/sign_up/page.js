@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
+import Toast from '@/components/Toast'
+import { toast, Bounce } from 'react-toastify'
 
 const SignUp = () => {
   const route = useRouter()
@@ -14,16 +16,49 @@ const SignUp = () => {
 
   const submitHandler = async () => {
     if (!username || !emailID || !password || !confirmPassword) {
-      alert("Please fill in all fields")
+      toast('Fill all details', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       return
     }
     if (!(emailID.includes("@gmail.com"))) {
-      alert("Enter valid email")
+      toast('Enter valid email', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       setEmailID('')
       return
     }
     if (password !== confirmPassword) {
-      alert("Passwords did not match")
+      toast("Passwords did not match", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       setPassword('')
       setConfirmPassword('')
       return
@@ -37,10 +72,19 @@ const SignUp = () => {
     let data = await res.json()
 
     if (data.success) {
-      alert(data.message)
       route.push("/login")
     } else {
-      alert(data.message)
+      toast(data.message, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       setPassword('')
       setConfirmPassword('')
       setEmailID('')
@@ -50,6 +94,7 @@ const SignUp = () => {
 
   return (
     <>
+    <Toast/>
       <Navbar />
       <div className="flex justify-center items-center min-h-screen px-4 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,255,198,0.1),rgba(0,255,0,0))]">
         <div className="w-full max-w-md bg-white/10 text-white backdrop-blur-md rounded-xl p-6 shadow-lg border border-white/10">
